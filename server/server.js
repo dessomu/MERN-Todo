@@ -69,6 +69,8 @@ app.post("/login", async (req, res) => {
 
 // On Logout: clear cookie only
 app.post("/logout", (req, res) => {
+  console.log("logout request received");
+
   res.clearCookie("auth_token", { path: "/" });
   return res
     .status(200)
@@ -79,6 +81,7 @@ app.post("/logout", (req, res) => {
 app.get("/", authMiddleware, async (req, res) => {
   const userId = req.user.uid;
   const cacheKey = `todos_${userId}`;
+  console.log("get request received", userId);
 
   // Checking if cache exists
   const cached = await redis.get(cacheKey);
