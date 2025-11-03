@@ -23,10 +23,13 @@ app.use(cookieParser());
 app.post("/login", async (req, res) => {
   const { token } = req.body;
   if (!token) return res.status(400).json({ message: "Token missing" });
+  console.log(token);
 
   try {
     // Verify the Firebase token
     const decoded = await admin.auth().verifyIdToken(token);
+    console.log(decoded);
+
     const expiresIn = 7 * 24 * 60 * 60 * 1000; // 7 days
 
     // Using JWT to sign a token
@@ -37,6 +40,7 @@ app.post("/login", async (req, res) => {
         expiresIn: "7d",
       }
     );
+    console.log(customJwt);
 
     // Setting the JWT in cookie
     res.cookie("auth_token", customJwt, {
