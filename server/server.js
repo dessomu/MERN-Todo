@@ -79,6 +79,7 @@ app.post("/logout", (req, res) => {
     secure: true, // true in production
     sameSite: "none",
     path: "/",
+    domain: "mern-todo-8f4w.onrender.com", // 👈 important for cross-origin clear
   });
   return res
     .status(200)
