@@ -18,7 +18,7 @@ connectDB();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://todo-next-frontend-gamma.vercel.app/",
+    origin: "https://todo-next-frontend-gamma.vercel.app",
     credentials: true,
   })
 );
@@ -50,7 +50,7 @@ app.post("/login", async (req, res) => {
     // Setting the JWT in cookie
     res.cookie("auth_token", customJwt, {
       httpOnly: true,
-      secure: false, // true in production
+      secure: true, // true in production
       sameSite: "none",
       maxAge: expiresIn,
       path: "/",
