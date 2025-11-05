@@ -31,12 +31,10 @@ app.use(cookieParser());
 app.post("/login", async (req, res) => {
   const { token } = req.body;
   if (!token) return res.status(400).json({ message: "Token missing" });
-  console.log(token);
 
   try {
     // Verify the Firebase token
     const decoded = await admin.auth().verifyIdToken(token);
-    console.log(decoded);
 
     const expiresIn = 7 * 24 * 60 * 60 * 1000; // 7 days
 
@@ -48,13 +46,12 @@ app.post("/login", async (req, res) => {
         expiresIn: "7d",
       }
     );
-    console.log(customJwt);
 
     // Setting the JWT in cookie
     res.cookie("auth_token", customJwt, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: expiresIn,
       path: "/",
     });
@@ -72,12 +69,11 @@ app.post("/login", async (req, res) => {
 
 // On Logout: clear cookie only
 app.post("/logout", (req, res) => {
-  console.log("logout request received");
-
   res.clearCookie("auth_token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    sameSite: "lax",
     path: "/",
   });
   return res
