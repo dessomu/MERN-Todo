@@ -54,6 +54,7 @@ app.post("/login", async (req, res) => {
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: expiresIn,
       path: "/",
+      partitioned: true,
     });
 
     res
@@ -74,6 +75,7 @@ app.post("/logout", (req, res) => {
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     path: "/",
+    partitioned: true,
   });
   return res
     .status(200)
